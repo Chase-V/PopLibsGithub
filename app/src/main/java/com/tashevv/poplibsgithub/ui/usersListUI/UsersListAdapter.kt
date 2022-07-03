@@ -1,7 +1,8 @@
-package com.tashevv.poplibsgithub
+package com.tashevv.poplibsgithub.ui.usersListUI
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.tashevv.poplibsgithub.domain.UserEntity
 
 class UsersListAdapter : RecyclerView.Adapter<UsersListViewHolder>() {
 

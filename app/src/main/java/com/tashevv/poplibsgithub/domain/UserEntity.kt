@@ -1,4 +1,4 @@
-package com.tashevv.poplibsgithub
+package com.tashevv.poplibsgithub.domain
 
 import com.google.gson.annotations.SerializedName
 
