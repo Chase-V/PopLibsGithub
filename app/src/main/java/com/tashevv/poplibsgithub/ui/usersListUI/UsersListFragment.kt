@@ -1,19 +1,16 @@
 package com.tashevv.poplibsgithub.ui.usersListUI
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.tashevv.poplibsgithub.R
-import com.tashevv.poplibsgithub.domain.UsersRepo
 import com.tashevv.poplibsgithub.app
 import com.tashevv.poplibsgithub.databinding.UsersListFragmentBinding
+import com.tashevv.poplibsgithub.domain.UsersRepo
 
 class UsersListFragment : Fragment(R.layout.users_list_fragment) {
 
@@ -56,9 +53,6 @@ class UsersListFragment : Fragment(R.layout.users_list_fragment) {
         super.onDestroy()
         _binding = null
     }
-
-
-
 
 
     private fun initRecycler() {

@@ -8,12 +8,37 @@ import com.tashevv.poplibsgithub.domain.UsersRepo
 
 class UsersRepoImpl : UsersRepo {
 
-    private val localData:List<UserEntity> = mutableListOf(
-        UserEntity(1, "mojombo","https://avatars.githubusercontent.com/u/1?v=4","https://github.com/mojombo"),
-        UserEntity(2, "defunkt","https://avatars.githubusercontent.com/u/2?v=4","https://github.com/defunkt"),
-        UserEntity(3, "pjhyett","https://avatars.githubusercontent.com/u/3?v=4","https://github.com/pjhyett"),
-        UserEntity(4, "wycats","https://avatars.githubusercontent.com/u/4?v=4","https://github.com/wycats"),
-        UserEntity(5, "ezmobius","https://avatars.githubusercontent.com/u/5?v=4","https://github.com/ezmobius"),
+    private val localData: List<UserEntity> = mutableListOf(
+        UserEntity(
+            1,
+            "mojombo",
+            "https://avatars.githubusercontent.com/u/1?v=4",
+            "https://github.com/mojombo"
+        ),
+        UserEntity(
+            2,
+            "defunkt",
+            "https://avatars.githubusercontent.com/u/2?v=4",
+            "https://github.com/defunkt"
+        ),
+        UserEntity(
+            3,
+            "pjhyett",
+            "https://avatars.githubusercontent.com/u/3?v=4",
+            "https://github.com/pjhyett"
+        ),
+        UserEntity(
+            4,
+            "wycats",
+            "https://avatars.githubusercontent.com/u/4?v=4",
+            "https://github.com/wycats"
+        ),
+        UserEntity(
+            5,
+            "ezmobius",
+            "https://avatars.githubusercontent.com/u/5?v=4",
+            "https://github.com/ezmobius"
+        ),
     )
 
 //    TODO remote data source
@@ -23,7 +48,7 @@ class UsersRepoImpl : UsersRepo {
 
     override fun getUsers(onSuccess: (List<UserEntity>) -> Unit, onError: ((Throwable) -> Unit)?) {
 
-    //TODO remote data source
+        //TODO remote data source
 
         Handler(Looper.getMainLooper()).postDelayed({
             onSuccess(localData)

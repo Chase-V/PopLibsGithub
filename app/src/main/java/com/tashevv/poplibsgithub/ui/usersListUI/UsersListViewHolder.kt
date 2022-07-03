@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.tashevv.poplibsgithub.R
-import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.databinding.ItemRecyclerViewUsersListFragmentBinding
+import com.tashevv.poplibsgithub.domain.UserEntity
 
 class UsersListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context)

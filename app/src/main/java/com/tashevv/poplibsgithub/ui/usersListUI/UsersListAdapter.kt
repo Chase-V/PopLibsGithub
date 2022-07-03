@@ -17,7 +17,8 @@ class UsersListAdapter : RecyclerView.Adapter<UsersListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListViewHolder =
         UsersListViewHolder(parent)
 
-    override fun onBindViewHolder(holder: UsersListViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: UsersListViewHolder, position: Int) =
+        holder.bind(getItem(position))
 
     override fun getItemCount(): Int = data.size
 
