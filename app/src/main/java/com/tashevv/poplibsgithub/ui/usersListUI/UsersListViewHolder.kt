@@ -14,6 +14,12 @@ class UsersListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         .inflate(R.layout.item_recycler_view_users_list_fragment, parent, false)
 ) {
 
+    init {
+        itemView.setOnClickListener{
+
+        }
+    }
+
     private val binding = ItemRecyclerViewUsersListFragmentBinding.bind(itemView)
 
     fun bind(userEntity: UserEntity) {
