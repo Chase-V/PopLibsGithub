@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PopLibsGithub</string>
+    <string name="user_avatar_description">User avatar</string>
 </resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/userCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/material_dynamic_neutral_variant90"
+    app:cardCornerRadius="@dimen/default_padding"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userCardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_padding">
+
+        <ImageView
+            android:id="@+id/userCardAvatarImageView"
+            android:layout_width="@dimen/users_list_avatar_width_height"
+            android:layout_height="@dimen/users_list_avatar_width_height"
+            android:contentDescription="@string/user_avatar_description"
+            android:src="@drawable/github_user_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/userCardLoginTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:textSize="@dimen/default_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/userCardAvatarImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/userCardAvatarImageView"
+            app:layout_constraintTop_toTopOf="@id/userCardAvatarImageView" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
