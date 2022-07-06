@@ -1,3 +1,4 @@
+/*
 package com.tashevv.poplibsgithub.ui.usersListUI
 
 import android.os.Bundle
@@ -10,9 +11,10 @@ import androidx.fragment.app.Fragment
 import com.tashevv.poplibsgithub.R
 import com.tashevv.poplibsgithub.app
 import com.tashevv.poplibsgithub.databinding.UsersListFragmentBinding
-import com.tashevv.poplibsgithub.domain.UsersRepo
+import com.tashevv.poplibsgithub.domain.UserEntity
+import com.tashevv.poplibsgithub.domain.UsersListFragmentPresenter
 
-class UsersListFragment : Fragment(R.layout.users_list_fragment) {
+class UsersListFragment : Fragment(R.layout.users_list_fragment), UsersContract.View {
 
     companion object {
         fun newInstance(): UsersListFragment {
@@ -23,6 +25,8 @@ class UsersListFragment : Fragment(R.layout.users_list_fragment) {
         }
     }
 
+    private val presenter: UsersContract.Presenter by lazy { extractPresenter() }
+
     private var _binding: UsersListFragmentBinding? = null
     private val binding: UsersListFragmentBinding
         get() {
@@ -30,52 +34,58 @@ class UsersListFragment : Fragment(R.layout.users_list_fragment) {
         }
 
     private val adapter = UsersListAdapter()
-    private val repo: UsersRepo by lazy { app.usersRepo }
+//    private val repo: UsersRepo by lazy { app.usersRepo }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        presenter.attach(this)
         _binding = UsersListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initRecycler()
-        loadData()
         super.onViewCreated(view, savedInstanceState)
+        initViews()
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        presenter.detach()
     }
 
+    private fun extractPresenter(): UsersContract.Presenter {
+        return requireActivity().lastCustomNonConfigurationInstance as? UsersContract.Presenter
+            ?: UsersListFragmentPresenter(app.usersRepo)
+    }
+
+    private fun initViews() {
+        binding.usersListRefreshButton.setOnClickListener {
+            presenter.onRefresh()
+        }
+        initRecycler()
+    }
 
     private fun initRecycler() {
         binding.usersListRecyclerView.adapter = adapter
     }
 
-    private fun loadData() {
-        showProgressBar(true)
-        repo.getUsers(
-            onSuccess = {
-                showProgressBar(false)
-                adapter.setData(it)
-            },
-            onError = {
-                showProgressBar(false)
-                Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_SHORT).show()
-            }
-        )
+    override fun showUsers(users: List<UserEntity>) {
+        adapter.setData(users)
     }
 
-    private fun showProgressBar(isLoading: Boolean) {
+    override fun showError(throwable: Throwable) {
+        Toast.makeText(requireContext(), throwable.localizedMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showProgressBar(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
         binding.usersListRecyclerView.isVisible = !isLoading
     }
 
-}
+}*/
