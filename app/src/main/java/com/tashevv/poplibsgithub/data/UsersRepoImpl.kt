@@ -3,7 +3,11 @@ package com.tashevv.poplibsgithub.data
 import android.os.Handler
 import android.os.Looper
 import com.tashevv.poplibsgithub.domain.UserEntity
+import com.tashevv.poplibsgithub.domain.retrofit.UsersListRetrofitImpl
 import com.tashevv.poplibsgithub.domain.UsersRepo
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class UsersRepoImpl : UsersRepo {
@@ -41,17 +45,35 @@ class UsersRepoImpl : UsersRepo {
         ),
     )
 
-//    TODO remote data source
-//    private val remoteData:List<UserEntity> = {
-//
-//    }
+    private var data: List<UserEntity> = localData
+
+    private val retrofitImpl = UsersListRetrofitImpl()
+
+    //    TODO remote data source
+    private fun remoteData() = retrofitImpl.getRetrofitImpl().getUsersList().enqueue(callback)
+
+    private val callback = object : Callback<List<UserEntity>> {
+
+        override fun onResponse(
+            call: Call<List<UserEntity>>,
+            response: Response<List<UserEntity>>
+        ) {
+            if (response.isSuccessful && response.body() != null) {
+                data = response.body()!!
+            } else Throwable(response.errorBody().toString())
+        }
+
+        override fun onFailure(call: Call<List<UserEntity>>, t: Throwable) {
+            data = localData
+        }
+
+    }
 
     override fun getUsers(onSuccess: (List<UserEntity>) -> Unit, onError: ((Throwable) -> Unit)?) {
-
-        //TODO remote data source
+        remoteData()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            onSuccess(localData)
-        }, 2_000L)
+            onSuccess(data)
+        }, 3_000L)
     }
 }
