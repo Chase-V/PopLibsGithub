@@ -1,5 +1,6 @@
 package com.tashevv.poplibsgithub.domain
 
+/* На память про MVP
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 
 class UsersListPresenter(private val usersRepo: UsersRepo) : UsersContract.Presenter {
@@ -39,4 +40,4 @@ class UsersListPresenter(private val usersRepo: UsersRepo) : UsersContract.Prese
             }
         )
     }
-}
+}*/

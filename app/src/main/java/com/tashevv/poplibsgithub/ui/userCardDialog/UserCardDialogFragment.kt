@@ -1,4 +1,4 @@
-package com.tashevv.poplibsgithub.ui.usersListUI
+package com.tashevv.poplibsgithub.ui.userCardDialog
 
 import android.content.Intent
 import android.net.Uri
@@ -39,7 +39,7 @@ class UserCardDialogFragment(private val user: UserEntity) :
     }
 
     private fun initViews() {
-        binding.userCardDialogAvatarImageView.load(user.avatarUrl){
+        binding.userCardDialogAvatarImageView.load(user.avatarUrl) {
             crossfade(300)
             placeholder(requireContext().getDrawable(R.drawable.github_user_icon))
             transformations(RoundedCornersTransformation(20f))
