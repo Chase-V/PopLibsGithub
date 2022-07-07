@@ -41,6 +41,10 @@ class UsersRepoLocalImpl : UsersRepo {
         ),
     )
 
+    internal fun getLocalData():List<UserEntity>{
+        return localData
+    }
+
     override fun getUsers(onSuccess: (List<UserEntity>) -> Unit, onError: ((Throwable) -> Unit)?) {
         Handler(Looper.getMainLooper()).postDelayed({
             onSuccess(localData)

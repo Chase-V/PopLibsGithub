@@ -1,4 +1,4 @@
-/*
+/* На память о возне с фрагментом, может пригодится в будущем
 package com.tashevv.poplibsgithub.ui.usersListUI
 
 import android.os.Bundle
