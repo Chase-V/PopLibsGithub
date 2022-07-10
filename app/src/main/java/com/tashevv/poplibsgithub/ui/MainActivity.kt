@@ -17,6 +17,7 @@ import com.tashevv.poplibsgithub.ui.userCardDialog.UserCardDialogFragment
 import com.tashevv.poplibsgithub.ui.usersListUI.RecyclerItemClickListener
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersListAdapter
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: UsersContract.ViewModel
 
     private val adapter = UsersListAdapter()
+    private val viewModelDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +37,27 @@ class MainActivity : AppCompatActivity() {
         initViews()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModelDisposable.dispose()
+    }
+
 
     private fun initViewModel() {
         viewModel = extractViewModel()
-        viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
-        viewModel.errorLiveData.observe(this) { showError(it) }
-        viewModel.usersLiveData.observe(this) { showUsers(it) }
+
+        viewModelDisposable.addAll(
+            viewModel.progressBarLiveData.subscribe { showProgressBar(it) },
+            viewModel.errorLiveData.subscribe { showError(it) },
+            viewModel.usersLiveData.subscribe { showUsers(it) }
+        )
+
+
+        /* Без RxJava
+         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
+         viewModel.errorLiveData.observe(this) { showError(it) }
+         viewModel.usersLiveData.observe(this) { showUsers(it) }
+         */
     }
 
 

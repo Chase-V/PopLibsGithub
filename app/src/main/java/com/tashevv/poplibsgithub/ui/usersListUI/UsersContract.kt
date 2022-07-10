@@ -2,14 +2,15 @@ package com.tashevv.poplibsgithub.ui.usersListUI
 
 import androidx.lifecycle.LiveData
 import com.tashevv.poplibsgithub.domain.UserEntity
+import io.reactivex.rxjava3.core.Observable
 
 interface UsersContract {
 
 
     interface ViewModel {
-        val usersLiveData: LiveData<List<UserEntity>>
-        val errorLiveData: LiveData<Throwable>
-        val progressBarLiveData: LiveData<Boolean>
+        val usersLiveData: Observable<List<UserEntity>>
+        val errorLiveData: Observable<Throwable>
+        val progressBarLiveData: Observable<Boolean>
         fun onRefresh()
     }
 

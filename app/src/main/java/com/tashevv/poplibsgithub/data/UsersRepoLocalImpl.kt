@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.domain.UsersRepo
+import io.reactivex.rxjava3.core.Single
 
 
 class UsersRepoLocalImpl : UsersRepo {
@@ -41,7 +42,7 @@ class UsersRepoLocalImpl : UsersRepo {
         ),
     )
 
-    internal fun getLocalData():List<UserEntity>{
+    internal fun getLocalData(): List<UserEntity> {
         return localData
     }
 
@@ -50,4 +51,6 @@ class UsersRepoLocalImpl : UsersRepo {
             onSuccess(localData)
         }, 3_000L)
     }
+
+    override fun getUsers(): Single<List<UserEntity>> = Single.just(localData)
 }
