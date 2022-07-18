@@ -1,7 +1,5 @@
 package com.tashevv.poplibsgithub.domain
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -17,27 +15,12 @@ class UsersListViewModel(
     override val errorLiveData: Observable<Throwable> = BehaviorSubject.create()
     override val progressBarLiveData: Observable<Boolean> = BehaviorSubject.create()
 
-
     override fun onRefresh() {
         loadData()
     }
 
     private fun loadData() {
         progressBarLiveData.toSubject().onNext(true)
-
-/* без RxJava
-        usersRepo.getUsers(
-            onSuccess = {
-                usersLiveData.toMutable().postValue(it)
-                progressBarLiveData.toMutable().postValue(false)
-            },
-            onError = {
-                progressBarLiveData.toMutable().postValue(false)
-                errorLiveData.toMutable().postValue(it)
-            }
-        )*/
-
-//        C RxJava
         usersRepo
             .getUsers()
             .observeOn(AndroidSchedulers.mainThread())
@@ -51,11 +34,7 @@ class UsersListViewModel(
                     errorLiveData.toSubject().onNext(it)
                 }
             )
-    }
 
-    private fun <T> LiveData<T>.toMutable(): MutableLiveData<T> {
-        return this as? MutableLiveData<T>
-            ?: throw IllegalStateException("This is not a LiveData")
     }
 
     private fun <T : Any> Observable<T>.toSubject(): Subject<T> {
@@ -63,3 +42,21 @@ class UsersListViewModel(
             ?: throw IllegalStateException("This is not a Observable")
     }
 }
+
+
+//    private fun <T> LiveData<T>.toMutable(): MutableLiveData<T> {
+//        return this as? MutableLiveData<T>
+//            ?: throw IllegalStateException("This is not a LiveData")
+//    }
+
+/* без RxJava
+        usersRepo.getUsers(
+            onSuccess = {
+                usersLiveData.toMutable().postValue(it)
+                progressBarLiveData.toMutable().postValue(false)
+            },
+            onError = {
+                progressBarLiveData.toMutable().postValue(false)
+                errorLiveData.toMutable().postValue(it)
+            }
+        )*/
