@@ -1,12 +1,12 @@
 package com.tashevv.poplibsgithub.domain.retrofit
 
 import com.tashevv.poplibsgithub.domain.UserEntity
-import retrofit2.Call
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 
 interface UsersListAPI {
 
     @GET("users")
-    fun getUsersList(): Call<List<UserEntity>>
+    fun getUsersList(): Single<List<UserEntity>>
 
 }

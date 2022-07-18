@@ -4,18 +4,17 @@ import com.google.gson.GsonBuilder
 import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.domain.UsersRepo
 import com.tashevv.poplibsgithub.domain.retrofit.UsersListAPI
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class UsersRepoRetrofitImpl : UsersRepo {
+class RetrofitUsersRepoImpl : UsersRepo {
 
     private val baseUrl = "https://api.github.com/"
-    private val localData = UsersRepoLocalImpl().getLocalData()
 
-    private fun getRetrofitImpl(): UsersListAPI {
+    fun getRetrofitImpl(): UsersListAPI {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(
@@ -26,11 +25,24 @@ class UsersRepoRetrofitImpl : UsersRepo {
                             .create()
                     )
             )
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         return retrofit.create(UsersListAPI::class.java)
     }
 
+    override fun getUsers(): Single<List<UserEntity>> = getRetrofitImpl().getUsersList()
+
+    override fun insertUser(userEntity: UserEntity): Completable {
+        return Completable.complete()
+    }
+
+
+}
+
+
+/*  Без rxjava
     override fun getUsers(onSuccess: (List<UserEntity>) -> Unit, onError: ((Throwable) -> Unit)?) {
+
         getRetrofitImpl().getUsersList().enqueue(object : Callback<List<UserEntity>> {
 
             override fun onResponse(
@@ -51,5 +63,13 @@ class UsersRepoRetrofitImpl : UsersRepo {
             }
 
         })
-    }
-}
+
+//        C RxJava
+        getRetrofitImpl().getUsersList().subscribeBy(
+            onSuccess = { onSuccess.invoke(it) },
+            onError = {
+                onSuccess.invoke(localData)
+                onError?.invoke(it)
+            }
+        )
+    }*/

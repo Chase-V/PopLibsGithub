@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.request.CachePolicy
 import coil.transform.RoundedCornersTransformation
 import com.tashevv.poplibsgithub.R
 import com.tashevv.poplibsgithub.databinding.ItemRecyclerViewUsersListFragmentBinding
@@ -19,6 +20,8 @@ class UsersListViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     fun bind(userEntity: UserEntity) {
         binding.userCardLoginTextView.text = userEntity.login
         binding.userCardAvatarImageView.load(userEntity.avatarUrl) {
+            diskCachePolicy(CachePolicy.ENABLED)
+            networkCachePolicy(CachePolicy.ENABLED)
             crossfade(true)
             transformations(RoundedCornersTransformation(20f))
         }

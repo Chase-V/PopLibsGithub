@@ -1,5 +1,5 @@
-/* На память о возне с фрагментом, может пригодится в будущем
 package com.tashevv.poplibsgithub.ui.usersListUI
+/* На память о возне с фрагментом, может пригодится в будущем
 
 import android.os.Bundle
 import android.view.LayoutInflater
