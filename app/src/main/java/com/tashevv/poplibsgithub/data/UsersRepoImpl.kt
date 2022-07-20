@@ -7,15 +7,12 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class UsersRepoImpl : UsersRepo {
-
-    private val retrofit: RetrofitUsersRepoImpl = RetrofitUsersRepoImpl()
-    private val room: RoomUsersRepoImpl = RoomUsersRepoImpl()
+class UsersRepoImpl(private val retrofit: RetrofitUsersRepoImpl, private val room: RoomUsersRepoImpl) : UsersRepo {
 
     override fun insertUser(userEntity: UserEntity): Completable = Completable.complete()
 
     override fun getUsers(): Single<List<UserEntity>> =
-        retrofit.getRetrofitImpl().getUsersList()
+        retrofit.getUsers()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { it -> it.forEach { room.insertUser(it) } }

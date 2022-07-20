@@ -2,34 +2,33 @@ package com.tashevv.poplibsgithub
 
 import android.app.Application
 import android.content.Context
-import com.tashevv.poplibsgithub.data.UsersRepoImpl
-import com.tashevv.poplibsgithub.domain.UsersRepo
-import com.tashevv.poplibsgithub.domain.room.RoomUsersListDatabase
+import com.tashevv.poplibsgithub.dependencyInjection.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
     companion object {
         private lateinit var context: Context
-        fun getAppContext(): Context {
+        private fun getAppContext(): Context {
             return context
         }
-
-        fun getDatabaseInstance(): RoomUsersListDatabase =
-            RoomUsersListDatabase.getDatabaseInstance(
-                getAppContext()
-            )
     }
 
     override fun onCreate() {
         super.onCreate()
 
         context = applicationContext
+
+
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+            modules(appModule)
+        }
+
     }
-
-    val usersRepo: UsersRepo by lazy { UsersRepoImpl() }
-
-
 }
 
 val Context.app: App get() = applicationContext as App
-//val Fragment.app: App get() = requireContext().applicationContext as App

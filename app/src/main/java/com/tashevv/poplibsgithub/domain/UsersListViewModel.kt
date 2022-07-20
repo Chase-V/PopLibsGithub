@@ -1,5 +1,6 @@
 package com.tashevv.poplibsgithub.domain
 
+import androidx.lifecycle.ViewModel
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -9,7 +10,7 @@ import io.reactivex.rxjava3.subjects.Subject
 
 class UsersListViewModel(
     private val usersRepo: UsersRepo
-) : UsersContract.ViewModel {
+) : UsersContract.ViewModel, ViewModel() {
 
     override val usersObservable: Observable<List<UserEntity>> = BehaviorSubject.create()
     override val errorObservable: Observable<Throwable> = BehaviorSubject.create()
@@ -42,21 +43,3 @@ class UsersListViewModel(
             ?: throw IllegalStateException("This is not a Observable")
     }
 }
-
-
-//    private fun <T> LiveData<T>.toMutable(): MutableLiveData<T> {
-//        return this as? MutableLiveData<T>
-//            ?: throw IllegalStateException("This is not a LiveData")
-//    }
-
-/* без RxJava
-        usersRepo.getUsers(
-            onSuccess = {
-                usersLiveData.toMutable().postValue(it)
-                progressBarLiveData.toMutable().postValue(false)
-            },
-            onError = {
-                progressBarLiveData.toMutable().postValue(false)
-                errorLiveData.toMutable().postValue(it)
-            }
-        )*/

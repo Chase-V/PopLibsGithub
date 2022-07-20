@@ -18,15 +18,3 @@ interface UsersRepo {
     fun getUsers(): Single<List<UserEntity>>
 
 }
-
-//                          Без RxJava
-//    fun getUsers(
-//        onSuccess: (List<UserEntity>) -> Unit,
-//        onError: ((Throwable) -> Unit)? = null
-//    )
-
-//    @Delete
-//    fun deleteUser(user: UserEntity):Completable
-//
-//    @Update
-//    fun updateUserData(user: UserEntity)
