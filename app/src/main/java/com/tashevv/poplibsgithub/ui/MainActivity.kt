@@ -47,25 +47,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = extractViewModel()
 
         viewModelDisposable.addAll(
-            viewModel.progressBarLiveData.subscribe { showProgressBar(it) },
-            viewModel.errorLiveData.subscribe { showError(it) },
-            viewModel.usersLiveData.subscribe { showUsers(it) }
+            viewModel.progressObservable.subscribe { showProgressBar(it) },
+            viewModel.errorObservable.subscribe { showError(it) },
+            viewModel.usersObservable.subscribe { showUsers(it) },
         )
-
-
-        /* Без RxJava
-         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
-         viewModel.errorLiveData.observe(this) { showError(it) }
-         viewModel.usersLiveData.observe(this) { showUsers(it) }
-         */
     }
 
 
     private fun initViews() {
         initRecycler()
-        binding.usersListRefreshButton.setOnClickListener {
-            viewModel.onRefresh()
-        }
+
+        binding.usersListRefreshButton.createButtonClickObservable()
+            .subscribe { viewModel.onRefresh() }
+
         addOnUserClickListener(binding.usersListRecyclerView)
     }
 
@@ -128,10 +122,18 @@ class MainActivity : AppCompatActivity() {
     override fun onRetainCustomNonConfigurationInstance(): UsersContract.ViewModel {
         return viewModel
     }
+
 }
 
 
 /* На память про MVP
+
+
+        /* Без RxJava
+         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
+         viewModel.errorLiveData.observe(this) { showError(it) }
+         viewModel.usersLiveData.observe(this) { showUsers(it) }
+         */
 class MainActivity : AppCompatActivity(), UsersContract.Presenter {
 
     private lateinit var binding: ActivityMainBinding

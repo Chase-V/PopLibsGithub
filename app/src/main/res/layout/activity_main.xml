@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/material_dynamic_neutral_variant99">
 
-    <Button
+    <com.tashevv.poplibsgithub.ui.usersListUI.RxButton
         android:id="@+id/usersListRefreshButton"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/responsive_dimen_0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/material_dynamic_tertiary50"
         android:text="@string/refresh_list_button_text"
@@ -19,7 +19,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usersListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/responsive_dimen_0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
