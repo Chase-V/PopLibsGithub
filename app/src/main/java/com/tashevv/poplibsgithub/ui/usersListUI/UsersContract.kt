@@ -7,9 +7,9 @@ interface UsersContract {
 
 
     interface ViewModel {
-        val usersLiveData: Observable<List<UserEntity>>
-        val errorLiveData: Observable<Throwable>
-        val progressBarLiveData: Observable<Boolean>
+        val usersObservable: Observable<List<UserEntity>>
+        val errorObservable: Observable<Throwable>
+        val progressObservable: Observable<Boolean>
         fun onRefresh()
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -15,6 +16,7 @@ import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.domain.UsersListViewModel
 import com.tashevv.poplibsgithub.ui.userCardDialog.UserCardDialogFragment
 import com.tashevv.poplibsgithub.ui.usersListUI.RecyclerItemClickListener
+import com.tashevv.poplibsgithub.ui.usersListUI.RxButton
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersListAdapter
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -47,25 +49,25 @@ class MainActivity : AppCompatActivity() {
         viewModel = extractViewModel()
 
         viewModelDisposable.addAll(
-            viewModel.progressBarLiveData.subscribe { showProgressBar(it) },
-            viewModel.errorLiveData.subscribe { showError(it) },
-            viewModel.usersLiveData.subscribe { showUsers(it) }
+            viewModel.progressObservable.subscribe { showProgressBar(it) },
+            viewModel.errorObservable.subscribe { showError(it) },
+            viewModel.usersObservable.subscribe { showUsers(it) },
         )
-
-
-        /* Без RxJava
-         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
-         viewModel.errorLiveData.observe(this) { showError(it) }
-         viewModel.usersLiveData.observe(this) { showUsers(it) }
-         */
     }
 
 
     private fun initViews() {
         initRecycler()
-        binding.usersListRefreshButton.setOnClickListener {
+
+        val rxButton = RxButton.createButtonClickObservable(binding.usersListRefreshButton)
+        rxButton.subscribe {
             viewModel.onRefresh()
         }
+
+
+//        binding.usersListRefreshButton.setOnClickListener {
+//            viewModel.onRefresh()
+//        }
         addOnUserClickListener(binding.usersListRecyclerView)
     }
 
@@ -128,10 +130,18 @@ class MainActivity : AppCompatActivity() {
     override fun onRetainCustomNonConfigurationInstance(): UsersContract.ViewModel {
         return viewModel
     }
+
 }
 
 
 /* На память про MVP
+
+
+        /* Без RxJava
+         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
+         viewModel.errorLiveData.observe(this) { showError(it) }
+         viewModel.usersLiveData.observe(this) { showUsers(it) }
+         */
 class MainActivity : AppCompatActivity(), UsersContract.Presenter {
 
     private lateinit var binding: ActivityMainBinding
