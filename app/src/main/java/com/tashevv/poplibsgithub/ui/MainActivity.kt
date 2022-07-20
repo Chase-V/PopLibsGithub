@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -16,7 +15,6 @@ import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.domain.UsersListViewModel
 import com.tashevv.poplibsgithub.ui.userCardDialog.UserCardDialogFragment
 import com.tashevv.poplibsgithub.ui.usersListUI.RecyclerItemClickListener
-import com.tashevv.poplibsgithub.ui.usersListUI.RxButton
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersListAdapter
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -59,15 +57,9 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         initRecycler()
 
-        val rxButton = RxButton.createButtonClickObservable(binding.usersListRefreshButton)
-        rxButton.subscribe {
-            viewModel.onRefresh()
-        }
+        binding.usersListRefreshButton.createButtonClickObservable()
+            .subscribe { viewModel.onRefresh() }
 
-
-//        binding.usersListRefreshButton.setOnClickListener {
-//            viewModel.onRefresh()
-//        }
         addOnUserClickListener(binding.usersListRecyclerView)
     }
 

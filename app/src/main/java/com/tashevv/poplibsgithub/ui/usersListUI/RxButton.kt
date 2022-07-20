@@ -1,28 +1,25 @@
 package com.tashevv.poplibsgithub.ui.usersListUI
 
 import android.content.Context
-import android.widget.Button
+import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import com.tashevv.poplibsgithub.App
 import io.reactivex.rxjava3.core.Observable
 
-class RxButton(context: Context) : AppCompatButton(context) {
+class RxButton(context: Context, attrs: AttributeSet?) : AppCompatButton(context, attrs) {
 
-    companion object{
-        internal fun createButtonClickObservable(button: Button): Observable<String> {
+    fun createButtonClickObservable(): Observable<String> {
 
-            return Observable.create { emitter ->
+        return Observable.create { emitter ->
 
-                button.setOnClickListener {
-                    emitter.onNext("Button Click")
-                }
+            setOnClickListener {
+                emitter.onNext("Button Click")
+            }
 
-                emitter.setCancellable {
-                    button.setOnClickListener(null)
-                }
+            emitter.setCancellable {
+                setOnClickListener(null)
             }
         }
     }
-
-
 
 }
