@@ -42,21 +42,3 @@ class UsersListViewModel(
             ?: throw IllegalStateException("This is not a Observable")
     }
 }
-
-
-//    private fun <T> LiveData<T>.toMutable(): MutableLiveData<T> {
-//        return this as? MutableLiveData<T>
-//            ?: throw IllegalStateException("This is not a LiveData")
-//    }
-
-/* без RxJava
-        usersRepo.getUsers(
-            onSuccess = {
-                usersLiveData.toMutable().postValue(it)
-                progressBarLiveData.toMutable().postValue(false)
-            },
-            onError = {
-                progressBarLiveData.toMutable().postValue(false)
-                errorLiveData.toMutable().postValue(it)
-            }
-        )*/
