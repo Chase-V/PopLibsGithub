@@ -1,5 +1,6 @@
 package com.tashevv.poplibsgithub.domain
 
+import androidx.lifecycle.ViewModel
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -9,7 +10,7 @@ import io.reactivex.rxjava3.subjects.Subject
 
 class UsersListViewModel(
     private val usersRepo: UsersRepo
-) : UsersContract.ViewModel {
+) : UsersContract.ViewModel, ViewModel() {
 
     override val usersObservable: Observable<List<UserEntity>> = BehaviorSubject.create()
     override val errorObservable: Observable<Throwable> = BehaviorSubject.create()

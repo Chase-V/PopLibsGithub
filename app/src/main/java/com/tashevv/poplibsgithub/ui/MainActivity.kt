@@ -9,20 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.RecyclerView
-import com.tashevv.poplibsgithub.app
 import com.tashevv.poplibsgithub.databinding.ActivityMainBinding
 import com.tashevv.poplibsgithub.domain.UserEntity
 import com.tashevv.poplibsgithub.domain.UsersListViewModel
 import com.tashevv.poplibsgithub.ui.userCardDialog.UserCardDialogFragment
 import com.tashevv.poplibsgithub.ui.usersListUI.RecyclerItemClickListener
-import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersListAdapter
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel: UsersListViewModel by viewModel()
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: UsersContract.ViewModel
 
     private val adapter = UsersListAdapter()
     private val viewModelDisposable = CompositeDisposable()
@@ -44,8 +44,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initViewModel() {
-        viewModel = extractViewModel()
-
         viewModelDisposable.addAll(
             viewModel.progressObservable.subscribe { showProgressBar(it) },
             viewModel.errorObservable.subscribe { showError(it) },
@@ -109,112 +107,4 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
-
-
-    private fun extractViewModel(): UsersContract.ViewModel {
-        @Suppress("DEPRECATION")
-        return lastCustomNonConfigurationInstance as? UsersContract.ViewModel
-            ?: UsersListViewModel(app.usersRepo)
-    }
-
-
-    @Deprecated("Deprecated in Java")
-    override fun onRetainCustomNonConfigurationInstance(): UsersContract.ViewModel {
-        return viewModel
-    }
-
 }
-
-
-/* На память про MVP
-
-
-        /* Без RxJava
-         viewModel.progressBarLiveData.observe(this) { showProgressBar(it) }
-         viewModel.errorLiveData.observe(this) { showError(it) }
-         viewModel.usersLiveData.observe(this) { showUsers(it) }
-         */
-class MainActivity : AppCompatActivity(), UsersContract.Presenter {
-
-    private lateinit var binding: ActivityMainBinding
-
-    private val adapter = UsersListAdapter()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        presenter.attach(this)
-
-        setContentView(binding.root)
-
-        initViews()
-    }
-
-    private fun addOnUserClickListener(recycler: RecyclerView) {
-        recycler.addOnItemTouchListener(
-            RecyclerItemClickListenr(
-                this,
-                recycler,
-                object : RecyclerItemClickListenr.OnItemClickListener {
-
-                    override fun onItemClick(view: View, position: Int) {
-                        supportFragmentManager.commit{
-                            setReorderingAllowed(true)
-                            add(UserCardDialogFragment(adapter.getItem(position)),"userCard")
-                        }
-                    }
-
-                    override fun onItemLongClick(view: View?, position: Int) {
-                        startActivity(Intent(Intent.ACTION_VIEW).apply {
-                            data = Uri.parse(adapter.getItem(position).htmlUrl)
-                        })
-                    }
-                })
-        )
-    }
-
-    @Suppress("DEPRECATION")
-    private fun extractPresenter(): UsersContract.Presenter {
-        return lastCustomNonConfigurationInstance as? UsersContract.Presenter
-            ?: UsersListPresenter(app.usersRepo)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter {
-        return presenter
-    }
-
-    private fun initViews() {
-        binding.usersListRefreshButton.setOnClickListener {
-            presenter.onRefresh()
-        }
-        initRecycler()
-        val recyclerV = binding.usersListRecyclerView
-        addOnUserClickListener(recyclerV)
-    }
-
-    private fun initRecycler() {
-        binding.usersListRecyclerView.adapter = adapter
-    }
-
-    override fun showUsers(users: List<UserEntity>) {
-        adapter.setData(users)
-    }
-
-    override fun showError(throwable: Throwable) {
-        Toast.makeText(this, throwable.localizedMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showProgressBar(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-        binding.usersListRecyclerView.isVisible = !isLoading
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.detach()
-    }
-
-
-}*/
