@@ -5,30 +5,42 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.RecyclerView
+import com.tashevv.poplibsgithub.app
 import com.tashevv.poplibsgithub.databinding.ActivityMainBinding
 import com.tashevv.poplibsgithub.domain.UserEntity
-import com.tashevv.poplibsgithub.domain.UsersListViewModel
+import com.tashevv.poplibsgithub.domain.UsersRepo
+import com.tashevv.poplibsgithub.domain.viewModel.UsersListViewModel
 import com.tashevv.poplibsgithub.ui.userCardDialog.UserCardDialogFragment
 import com.tashevv.poplibsgithub.ui.usersListUI.RecyclerItemClickListener
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: UsersListViewModel by viewModel()
 
     private lateinit var binding: ActivityMainBinding
 
     private val adapter = UsersListAdapter()
-    private val viewModelDisposable = CompositeDisposable()
+
+    @Inject
+    lateinit var usersRepo: UsersRepo
+    private val viewModel: UsersListViewModel by viewModels()
+
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        app.appComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,25 +51,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModelDisposable.dispose()
+        compositeDisposable.dispose()
     }
 
 
     private fun initViewModel() {
-        viewModelDisposable.addAll(
+        compositeDisposable.addAll(
             viewModel.progressObservable.subscribe { showProgressBar(it) },
             viewModel.errorObservable.subscribe { showError(it) },
             viewModel.usersObservable.subscribe { showUsers(it) },
+            binding.usersListRefreshButton.createButtonClickObservable()
+                .subscribe { viewModel.onRefresh() }
         )
     }
 
 
     private fun initViews() {
         initRecycler()
-
-        binding.usersListRefreshButton.createButtonClickObservable()
-            .subscribe { viewModel.onRefresh() }
-
         addOnUserClickListener(binding.usersListRecyclerView)
     }
 
