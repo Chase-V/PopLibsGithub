@@ -1,14 +1,19 @@
-package com.tashevv.poplibsgithub.domain
+package com.tashevv.poplibsgithub.domain.viewModel
 
 import androidx.lifecycle.ViewModel
+import com.tashevv.poplibsgithub.domain.UserEntity
+import com.tashevv.poplibsgithub.domain.UsersRepo
 import com.tashevv.poplibsgithub.ui.usersListUI.UsersContract
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
+import javax.inject.Inject
 
-class UsersListViewModel(
+@HiltViewModel
+class UsersListViewModel @Inject constructor(
     private val usersRepo: UsersRepo
 ) : UsersContract.ViewModel, ViewModel() {
 

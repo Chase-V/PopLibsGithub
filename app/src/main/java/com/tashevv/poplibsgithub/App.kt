@@ -2,33 +2,38 @@ package com.tashevv.poplibsgithub
 
 import android.app.Application
 import android.content.Context
-import com.tashevv.poplibsgithub.dependencyInjection.appModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import com.tashevv.poplibsgithub.dependencyInjection.AppComponent
+import com.tashevv.poplibsgithub.dependencyInjection.DaggerAppComponent
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
         private lateinit var context: Context
-        private fun getAppContext(): Context {
+        fun getAppContext(): Context {
             return context
         }
     }
+
+    lateinit var appComponent: AppComponent
+
 
     override fun onCreate() {
         super.onCreate()
 
         context = applicationContext
 
-
-        startKoin {
-            androidLogger()
-            androidContext(this@App)
-            modules(appModule)
-        }
-
+        appComponent = DaggerAppComponent.create()
+//        appComponent.getUsersRepo()
     }
 }
 
 val Context.app: App get() = applicationContext as App
+
+
+//        startKoin {
+//            androidLogger()
+//            androidContext(this@App)
+//            modules(appModule)
+//        }
